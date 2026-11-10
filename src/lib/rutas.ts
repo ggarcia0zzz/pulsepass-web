@@ -1,0 +1,22 @@
+export const RUTAS = {
+    inicio: '/',
+    eventos: '/eventos',
+    evento: (codigo: string) => `/eventos/${codigo}`,
+    artistas: '/artistas',
+    artista: (id: number | string) => `/artistas/${id}`,
+    sedes: '/sedes',
+    sede: (codigo: string) => `/sedes/${codigo}`,
+    login: '/login',
+    registro: '/registro',
+    cuenta: '/cuenta',
+    misTickets: '/mis-tickets',
+    ticket: (codigo: string) => `/mis-tickets/${codigo}`,
+    confirmacion: (codigo: string) => `/compra/confirmacion/${codigo}`,
+    validacion: '/staff/validacion',
+    ticketsPagados: (eventCode?: string) =>
+        eventCode ? `/staff/eventos/${eventCode}/tickets` : '/staff/eventos/tickets',
+    adminEventos: '/admin/eventos',
+    adminNuevo: '/admin/eventos/nuevo',
+    adminEvento: (codigo: string) => `/admin/eventos/${codigo}`,
+    sinPermisos: '/403',
+} as const
