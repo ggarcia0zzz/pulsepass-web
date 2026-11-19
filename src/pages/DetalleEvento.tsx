@@ -1,3 +1,4 @@
+import { CodigoEvento } from "../componentes/CodigoEvento";
 import { Compra } from "../componentes/Compra";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router";
@@ -64,6 +65,7 @@ export default function DetalleEvento() {
     <div>
       {enlaceVolver}
       <Tarjeta className="space-y-4 p-6">
+        <div className="pp-poster" data-category={evento.category} aria-hidden="true"><span className="text-white font-bold tracking-widest uppercase">PulsePass / {ETIQUETA_CATEGORIA[evento.category]}</span></div>
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-600 dark:text-slate-400">
             {ETIQUETA_CATEGORIA[evento.category]}
@@ -76,6 +78,7 @@ export default function DetalleEvento() {
           {evento.description}
         </p>
 
+        <CodigoEvento codigo={evento.eventCode} />
         <dl className="grid gap-4 sm:grid-cols-2">
           <div>
             <dt className="text-sm font-semibold">Fecha y hora</dt>

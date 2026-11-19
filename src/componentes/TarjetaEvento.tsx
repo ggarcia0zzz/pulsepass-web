@@ -11,7 +11,8 @@ import { Tarjeta } from "./Tarjeta";
 
 export function TarjetaEvento({ evento }: { evento: Evento }) {
   return (
-    <Tarjeta className="flex h-full flex-col">
+    <Tarjeta className="pp-event flex h-full flex-col">
+      <div className="pp-poster mb-4" data-category={evento.category} aria-hidden="true"><span className="text-white text-xs font-bold tracking-widest uppercase">PulsePass / {ETIQUETA_CATEGORIA[evento.category]}</span></div>
       <div className="mb-2 flex items-center justify-between gap-2">
         <span className="text-xs font-medium uppercase tracking-wide text-slate-600 dark:text-slate-400">
           {ETIQUETA_CATEGORIA[evento.category]}

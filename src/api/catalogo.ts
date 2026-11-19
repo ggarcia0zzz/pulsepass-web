@@ -52,6 +52,8 @@ export const EventoSchema = z
   }));
 export const listarEventos = () =>
   http("/api/events/published", z.array(EventoSchema));
+export const listarEventosAdmin = () =>
+  http("/api/events", z.array(EventoSchema));
 export const obtenerEvento = (code: string) =>
   http("/api/events/" + encodeURIComponent(code), EventoSchema);
 export const listarArtistas = () =>

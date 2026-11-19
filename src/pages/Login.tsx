@@ -36,7 +36,8 @@ export default function Login() {
   };
 
   return (
-    <div className="mx-auto max-w-md">
+    <div className="pp-auth mx-auto max-w-md">
+      <p className="pp-kicker mb-2">Tu próxima experiencia te espera</p>
       <h1 className="mb-6 font-titulo text-2xl font-bold">Ingresar</h1>
       <Tarjeta>
         {location.state?.registrado && (

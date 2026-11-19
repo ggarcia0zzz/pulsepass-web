@@ -10,7 +10,7 @@ export function Tarjeta({ children, className }: TarjetaProps) {
   return (
     <div
       className={clsx(
-        "rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900",
+        "pp-card rounded-2xl bg-white p-4 shadow-sm dark:bg-slate-900",
         className,
       )}
     >

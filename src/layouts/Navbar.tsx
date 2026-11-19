@@ -43,7 +43,7 @@ function enlacesPorRol(rol: Rol | null): Enlace[] {
 
 function claseEnlace({ isActive }: { isActive: boolean }) {
   return clsx(
-    "block rounded-lg px-3 py-2 text-sm font-medium md:inline-block",
+    "block rounded-lg px-3 py-2 text-sm font-medium xl:inline-block",
     isActive
       ? "text-marca-700 underline underline-offset-8 dark:text-marca-500"
       : "text-slate-700 hover:text-marca-700 dark:text-slate-300 dark:hover:text-marca-500",
@@ -67,16 +67,16 @@ export function Navbar() {
           <Link
             to={RUTAS.inicio}
             onClick={cerrarMenu}
-            className="flex items-center gap-2 font-titulo text-lg font-bold"
+            className="flex items-center gap-2 font-titulo text-xl font-bold"
           >
-            <span className="grid size-8 place-items-center rounded-lg bg-marca-600 text-white">
+            <span className="grid size-10 place-items-center rounded-lg bg-linear-to-br from-marca-600 to-acento-500 text-white">
               <IconoMusica className="size-5" />
             </span>
             PulsePass
           </Link>
           <nav
             aria-label="Principal"
-            className="hidden md:flex md:items-center md:gap-1"
+            className="hidden xl:flex xl:items-center xl:gap-1"
           >
             {enlaces.map((e) => (
               <NavLink key={e.a} to={e.a} className={claseEnlace}>
@@ -86,7 +86,7 @@ export function Navbar() {
           </nav>
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden xl:block">
           {sesion.estado === "autenticado" ? (
             <MenuUsuario usuario={sesion.usuario} />
           ) : sesion.estado === "anonimo" ? (
@@ -105,7 +105,7 @@ export function Navbar() {
           aria-expanded={menuAbierto}
           aria-controls="menu-movil"
           onClick={() => setMenuAbierto((v) => !v)}
-          className="grid size-11 place-items-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marca-600 md:hidden"
+          className="grid size-11 place-items-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marca-600 xl:hidden"
         >
           {menuAbierto ? (
             <IconoCerrar className="size-6" />
@@ -118,7 +118,7 @@ export function Navbar() {
       {menuAbierto ? (
         <div
           id="menu-movil"
-          className="border-t border-slate-200 px-4 py-4 md:hidden dark:border-slate-800"
+          className="border-t border-slate-200 px-4 py-4 xl:hidden dark:border-slate-800"
         >
           <nav aria-label="Principal móvil" className="flex flex-col">
             {enlaces.map((e) => (

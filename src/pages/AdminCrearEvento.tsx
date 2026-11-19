@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { listarSedes, Categoria } from "../api/catalogo";
 import { crear } from "../api/operaciones";
@@ -9,13 +9,17 @@ import { Tarjeta } from "../componentes/Tarjeta";
 import { RUTAS } from "../lib/rutas";
 export default function AdminCrearEvento() {
   const nav = useNavigate();
+  const qc = useQueryClient();
   const q = useQuery({ queryKey: ["sedes"], queryFn: listarSedes });
   const m = useMutation({
     mutationFn: crear,
-    onSuccess: (e) => nav(RUTAS.adminEvento(e.eventCode)),
+    onSuccess: (e) => {
+      void qc.invalidateQueries({ queryKey: ["eventos"] });
+      nav(RUTAS.adminEvento(e.eventCode));
+    },
   });
   return (
-    <div className="mx-auto max-w-3xl space-y-4">
+    <div className="pp-panel mx-auto max-w-3xl space-y-4">
       <h1 className="text-2xl font-bold">Crear evento</h1>
       <Tarjeta>
         <form

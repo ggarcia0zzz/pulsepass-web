@@ -19,7 +19,7 @@ export default function ValidacionIngreso() {
     },
   });
   return (
-    <div className="mx-auto max-w-xl space-y-4">
+    <div className="pp-panel mx-auto max-w-xl space-y-4">
       <h1 className="text-2xl font-bold">Validar ingreso</h1>
       <form
         className="space-y-3"

@@ -25,7 +25,7 @@ export function TicketVista({
     },
   });
   return (
-    <Tarjeta>
+    <Tarjeta className="pp-ticket">
       <div className="space-y-2">
         <h2 className="font-bold">{t.eventName}</h2>
         <p className="font-mono">{t.ticketCode}</p>
@@ -40,7 +40,7 @@ export function TicketVista({
         <p>Evento: {new Date(t.eventDate).toLocaleString("es-CO")}</p>
         <p>Compra: {new Date(t.purchaseDate).toLocaleString("es-CO")}</p>
         {acciones && (
-          <div className="flex gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Link to={RUTAS.ticket(t.ticketCode)}>Ver detalle</Link>
             {t.status === "PAID" && (
               <Boton variante="peligro" onClick={() => setOpen(true)}>

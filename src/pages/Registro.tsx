@@ -32,7 +32,8 @@ export default function Registro() {
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="pp-auth mx-auto max-w-lg">
+      <p className="pp-kicker mb-2">Únete a PulsePass</p>
       <h1 className="mb-6 text-2xl font-bold">Crear cuenta</h1>
       <Tarjeta>
         <form
@@ -84,7 +85,7 @@ export default function Registro() {
             {...register("password")}
             error={errors.password?.message}
           />
-          <Boton type="submit" cargando={isSubmitting}>
+          <Boton className="w-full" type="submit" cargando={isSubmitting}>
             Registrarse
           </Boton>
         </form>

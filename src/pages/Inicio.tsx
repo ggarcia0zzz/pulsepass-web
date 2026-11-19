@@ -11,14 +11,15 @@ export default function Inicio() {
   const { sesion } = useAuth();
   return (
     <div className="space-y-8">
-      <section className="rounded-xl bg-linear-to-r from-marca-600 to-acento-500 p-8 text-white">
+      <section className="pp-hero rounded-3xl text-white">
+        <p className="pp-kicker mb-4">Tu próxima experiencia empieza aquí</p>
         <h1 className="font-titulo text-4xl font-bold">
-          Descubre los mejores eventos
+          Vive el momento. Siente el pulso.
         </h1>
         <p className="my-4">
           Música, cultura, deporte y tecnología en un solo lugar.
         </p>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <EnlaceBoton to={RUTAS.eventos} variante="secundario">
             Ver cartelera
           </EnlaceBoton>
@@ -27,7 +28,7 @@ export default function Inicio() {
           )}
         </div>
       </section>
-      <h2 className="text-xl font-bold">Próximos eventos</h2>
+      <div className="flex flex-wrap items-end justify-between gap-3"><div><p className="pp-kicker">En cartelera</p><h2 className="text-2xl font-bold">Próximos eventos</h2></div><Link className="text-marca-500 text-sm font-semibold" to={RUTAS.eventos}>Ver todos →</Link></div>
       {e.isPending ? (
         "Cargando…"
       ) : e.isError ? (
@@ -35,13 +36,13 @@ export default function Inicio() {
       ) : e.data.length === 0 ? (
         "Aún no hay eventos publicados"
       ) : (
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {e.data.slice(0, 3).map((x) => (
             <TarjetaEvento key={x.eventCode} evento={x} />
           ))}
         </div>
       )}
-      <h2 className="text-xl font-bold">Artistas destacados</h2>
+      <h2 className="text-2xl font-bold">Artistas destacados</h2>
       {a.isPending ? (
         "Cargando…"
       ) : a.isError ? (
@@ -49,7 +50,7 @@ export default function Inicio() {
       ) : (
         <div className="flex flex-wrap gap-4">
           {a.data.slice(0, 6).map((x) => (
-            <Link key={x.id} to={RUTAS.artista(x.id)}>
+            <Link className="pp-card rounded-xl px-5 py-4 font-semibold hover:text-marca-500" key={x.id} to={RUTAS.artista(x.id)}>
               {x.stageName}
             </Link>
           ))}

@@ -1,3 +1,6 @@
+import { CodigoEvento } from "../componentes/CodigoEvento";
+import { EnlaceBoton } from "../componentes/EnlaceBoton";
+import { RUTAS } from "../lib/rutas";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -34,7 +37,8 @@ export default function AdminGestionEvento() {
     onSuccess: actualizar,
   });
   return (
-    <div className="mx-auto max-w-3xl space-y-4">
+    <div className="pp-panel mx-auto max-w-3xl space-y-4">
+      <EnlaceBoton variante="fantasma" to={RUTAS.adminEventos}>← Volver a administrar eventos</EnlaceBoton>
       <h1 className="text-2xl font-bold">Gestionar evento</h1>
       {q.isPending ? (
         "Cargando…"
@@ -46,7 +50,7 @@ export default function AdminGestionEvento() {
         <Tarjeta>
           <div className="space-y-4">
             <h2 className="text-xl font-bold">{q.data.name}</h2>
-            <p className="font-mono">{eventCode}</p>
+            <CodigoEvento codigo={q.data.eventCode} />
             <Badge tono={q.data.status} />
             <p>{q.data.description}</p>
             <p>{q.data.sede.name}</p>

@@ -55,7 +55,7 @@ export default function CatalogoEventos() {
     <div>
       <h1 className="mb-6 font-titulo text-2xl font-bold">Eventos</h1>
 
-      <div className="mb-6 grid gap-4 sm:grid-cols-2">
+      <div className="pp-card rounded-2xl p-4 mb-6 grid gap-4 sm:grid-cols-2">
         <Campo
           etiqueta="Buscar"
           type="search"
