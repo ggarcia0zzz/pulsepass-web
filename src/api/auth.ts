@@ -1,23 +1,35 @@
-import type { UsuarioAutenticado } from '../funcionalidades/auth/tipos'
-import { ApiError, esperar } from './cliente'
-import { CUENTAS_FALSAS } from './datosFalsos'
-
-export interface RespuestaLogin {
-    token: string
-    expiraEn: number
-    usuario: UsuarioAutenticado
+import { z } from "zod";
+import { http } from "./cliente";
+import { UsuarioAutenticadoSchema } from "../funcionalidades/auth/tipos";
+export const me = (token?: string) =>
+  http("/api/auth/me", UsuarioAutenticadoSchema, {}, token);
+export async function iniciarSesionApi(identifier: string, password: string) {
+  const r = await http(
+    "/api/auth/login",
+    z.object({ accessToken: z.string(), expiresIn: z.number() }),
+    { method: "POST", body: JSON.stringify({ identifier, password }) },
+    "",
+  );
+  return {
+    token: r.accessToken,
+    expiraEn: Date.now() + r.expiresIn * 1000,
+    usuario: await me(r.accessToken),
+  };
 }
-
-// TODO(backend): reemplazar por POST /api/auth/login cuando exista el endpoint.
-export async function iniciarSesionApi(email: string, password: string): Promise<RespuestaLogin> {
-    await esperar()
-    const cuenta = CUENTAS_FALSAS.find(
-        (c) => c.usuario.email.toLowerCase() === email.trim().toLowerCase() && c.password === password,
-    )
-    if (!cuenta) throw new ApiError('Correo o contraseña incorrectos', 401)
-    return {
-        token: `token-falso-${cuenta.usuario.id}`,
-        expiraEn: Date.now() + 15 * 60_000,
-        usuario: cuenta.usuario,
-    }
-}
+export const registrar = (data: unknown) =>
+  http(
+    "/api/users",
+    UsuarioAutenticadoSchema,
+    { method: "POST", body: JSON.stringify(data) },
+    "",
+  );
+export const usuarioPorEmail = (email: string) =>
+  http(
+    "/api/users/by-email?email=" + encodeURIComponent(email),
+    UsuarioAutenticadoSchema,
+  );
+export const usuarioPorNombre = (name: string) =>
+  http(
+    "/api/users/by-username?username=" + encodeURIComponent(name),
+    UsuarioAutenticadoSchema,
+  );

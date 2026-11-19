@@ -1,42 +1,74 @@
-import { ApiError, esperar } from './cliente'
-import { ARTISTAS, EVENTOS, SEDES } from './datosFalsos'
-import type { Artista, Evento, Sede } from './tipos'
-
-// TODO(backend): reemplazar cada función por su fetch real (GET /api/eventos, etc.).
-
-/** Eventos visibles para el público: todos menos los borradores, por fecha ascendente. */
-export async function listarEventos(): Promise<Evento[]> {
-    await esperar()
-    return EVENTOS.filter((e) => e.status !== 'DRAFT').sort((a, b) => a.eventDate.localeCompare(b.eventDate))
-}
-
-export async function obtenerEvento(eventCode: string): Promise<Evento> {
-    await esperar()
-    const evento = EVENTOS.find((e) => e.eventCode === eventCode && e.status !== 'DRAFT')
-    if (!evento) throw new ApiError('Evento no encontrado', 404)
-    return evento
-}
-
-export async function listarArtistas(): Promise<Artista[]> {
-    await esperar()
-    return ARTISTAS.filter((a) => a.active)
-}
-
-export async function obtenerArtista(id: number): Promise<Artista> {
-    await esperar()
-    const artista = ARTISTAS.find((a) => a.id === id)
-    if (!artista) throw new ApiError('Artista no encontrado', 404)
-    return artista
-}
-
-export async function listarSedes(): Promise<Sede[]> {
-    await esperar()
-    return SEDES.filter((s) => s.active)
-}
-
-export async function obtenerSede(code: string): Promise<Sede> {
-    await esperar()
-    const sede = SEDES.find((s) => s.code === code)
-    if (!sede) throw new ApiError('Sede no encontrada', 404)
-    return sede
-}
+import { z } from "zod";
+import { http } from "./cliente";
+export const Categoria = z.enum([
+  "MUSIC",
+  "SPORTS",
+  "TECHNOLOGY",
+  "EDUCATION",
+  "CULTURE",
+  "ENTERTAINMENT",
+]);
+export const SedeSchema = z.object({
+  code: z.string(),
+  name: z.string(),
+  city: z.string(),
+  address: z.string(),
+  capacity: z.number(),
+  active: z.boolean(),
+});
+export const ArtistaSchema = z.object({
+  id: z.number(),
+  stageName: z.string(),
+  genre: z
+    .string()
+    .nullable()
+    .transform((v) => v ?? ""),
+  country: z
+    .string()
+    .nullable()
+    .transform((v) => v ?? ""),
+  active: z.boolean(),
+});
+export const EventoSchema = z
+  .object({
+    eventCode: z.string(),
+    name: z.string(),
+    description: z
+      .string()
+      .nullable()
+      .transform((v) => v ?? ""),
+    category: Categoria,
+    status: z.enum(["DRAFT", "PUBLISHED", "SOLD_OUT", "CANCELLED", "FINISHED"]),
+    eventDate: z.string(),
+    minimumAge: z.number(),
+    streamingUrl: z.string().nullable(),
+    venue: SedeSchema,
+    artists: z.array(ArtistaSchema),
+  })
+  .transform(({ venue, artists, ...e }) => ({
+    ...e,
+    sede: venue,
+    artistas: artists,
+  }));
+export const listarEventos = () =>
+  http("/api/events/published", z.array(EventoSchema));
+export const obtenerEvento = (code: string) =>
+  http("/api/events/" + encodeURIComponent(code), EventoSchema);
+export const listarArtistas = () =>
+  http("/api/artists/active", z.array(ArtistaSchema));
+export const obtenerArtista = (id: number) =>
+  http("/api/artists/" + id, ArtistaSchema);
+export const listarSedes = () =>
+  http("/api/venues/active", z.array(SedeSchema));
+export const obtenerSede = (code: string) =>
+  http("/api/venues/" + encodeURIComponent(code), SedeSchema);
+export const eventosPorArtista = (name: string) =>
+  http(
+    "/api/events/by-artist?stageName=" + encodeURIComponent(name),
+    z.array(EventoSchema),
+  );
+export const artistaPorNombre = (name: string) =>
+  http(
+    "/api/artists/by-stage-name?stageName=" + encodeURIComponent(name),
+    ArtistaSchema,
+  );
