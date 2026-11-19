@@ -1,3 +1,69 @@
-﻿export default function CatalogoEventos() {
-  return <h1 className="font-titulo text-2xl font-bold">CatalogoEventos</h1>
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { listarEventos } from '../api/catalogo'
+import type { CategoriaEvento } from '../api/tipos'
+import { Campo } from '../componentes/Campo'
+import { Cargando } from '../componentes/Cargando'
+import { EstadoError } from '../componentes/EstadoError'
+import { EstadoVacio } from '../componentes/EstadoVacio'
+import { Selector } from '../componentes/Selector'
+import { TarjetaEvento } from '../componentes/TarjetaEvento'
+import { ETIQUETA_CATEGORIA, normalizar } from '../lib/formato'
+
+export default function CatalogoEventos() {
+    const [texto, setTexto] = useState('')
+    const [categoria, setCategoria] = useState<CategoriaEvento | ''>('')
+    const { data, isPending, isError, refetch } = useQuery({ queryKey: ['eventos'], queryFn: listarEventos })
+
+    const busqueda = normalizar(texto.trim())
+    const eventos = (data ?? []).filter((e) => {
+        if (categoria && e.category !== categoria) return false
+        if (!busqueda) return true
+        const pajar = normalizar([e.name, e.sede.city, e.sede.name, ...e.artistas.map((a) => a.stageName)].join(' '))
+        return pajar.includes(busqueda)
+    })
+
+    return (
+        <div>
+            <h1 className="mb-6 font-titulo text-2xl font-bold">Eventos</h1>
+
+            <div className="mb-6 grid gap-4 sm:grid-cols-2">
+                <Campo
+                    etiqueta="Buscar"
+                    type="search"
+                    placeholder="Evento, artista o ciudad"
+                    value={texto}
+                    onChange={(e) => setTexto(e.target.value)}
+                />
+                <Selector
+                    etiqueta="Categoría"
+                    value={categoria}
+                    onChange={(e) => setCategoria(e.target.value as CategoriaEvento | '')}
+                >
+                    <option value="">Todas</option>
+                    {Object.entries(ETIQUETA_CATEGORIA).map(([valor, etiqueta]) => (
+                        <option key={valor} value={valor}>
+                            {etiqueta}
+                        </option>
+                    ))}
+                </Selector>
+            </div>
+
+            {isPending ? (
+                <Cargando mensaje="Cargando eventos…" />
+            ) : isError ? (
+                <EstadoError mensaje="No pudimos cargar los eventos." onReintentar={() => refetch()} />
+            ) : eventos.length === 0 ? (
+                <EstadoVacio mensaje="No hay eventos que coincidan con tu búsqueda." />
+            ) : (
+                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {eventos.map((e) => (
+                        <li key={e.eventCode}>
+                            <TarjetaEvento evento={e} />
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    )
 }

@@ -3,6 +3,7 @@ import type { Rol, Sesion } from './tipos'
 
 export interface AuthContextValor {
     sesion: Sesion
+    iniciarSesion: (email: string, password: string) => Promise<void>
     cerrarSesion: () => void
     tieneRol: (...roles: Rol[]) => boolean
 }
