@@ -1,11 +1,11 @@
-import { createContext } from 'react'
-import type { Rol, Sesion } from './tipos'
+import { createContext } from "react";
+import type { Rol, Sesion } from "./tipos";
 
 export interface AuthContextValor {
-    sesion: Sesion
-    iniciarSesion: (email: string, password: string) => Promise<void>
-    cerrarSesion: () => void
-    tieneRol: (...roles: Rol[]) => boolean
+  sesion: Sesion;
+  iniciarSesion: (email: string, password: string) => Promise<void>;
+  cerrarSesion: () => void;
+  tieneRol: (...roles: Rol[]) => boolean;
 }
 
-export const AuthContext = createContext<AuthContextValor | null>(null)
+export const AuthContext = createContext<AuthContextValor | null>(null);

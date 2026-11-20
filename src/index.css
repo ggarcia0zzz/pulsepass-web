@@ -1,15 +1,47 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-marca-50: #eef2ff;
-  --color-marca-500: #6366f1;
-  --color-marca-600: #4f46e5;
-  --color-marca-700: #4338ca;
-  --color-acento-500: #f43f5e;
-  --font-titulo: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --color-marca-500: #c4b5fd;
+  --color-marca-600: #7c3aed;
+  --color-marca-700: #6d28d9;
+  --color-acento-500: #ec4899;
+  --font-titulo: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-cuerpo: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   font-family: var(--font-cuerpo);
 }
+:root { color-scheme: dark; }
+body { background: #0b1020; }
+.dark { --color-slate-950: #0b1020; --color-slate-900: #151d32; --color-slate-800: #29334d; }
+main { min-width: 0; overflow-wrap: anywhere; }
+main h1, main h2 { font-family: var(--font-titulo); letter-spacing: -.025em; }
+main h1 { line-height: 1.15; }
+.pp-shell { background-image: radial-gradient(ellipse at 15% 0%, #30205b55, transparent 45%), radial-gradient(ellipse at 100% 35%, #143e6550, transparent 35%); }
+.pp-card { border: 1px solid #34405a; background: linear-gradient(145deg,#1c2540,#151d32); box-shadow: 0 12px 30px #05081745; min-width:0; }
+.pp-hero { position:relative; isolation:isolate; overflow:hidden; background: linear-gradient(100deg,#26164f 5%,#301a65 48%,#8a285c 100%); border:1px solid #ad79ff55; padding:clamp(1.5rem,5vw,4rem); min-height:310px; display:flex; flex-direction:column; justify-content:center; }
+.pp-hero::before { content:''; position:absolute; inset:0; z-index:-1; background: url('/pulse-wave.svg') right center / auto 100% no-repeat; opacity:.7; }
+.pp-hero h1 { max-width:680px; font-size:clamp(2.25rem,6vw,4.25rem); letter-spacing:-.055em; line-height:1.02; }
+.pp-kicker { color:#d8b4fe; font-size:.75rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; }
+.pp-poster { min-height:145px; position:relative; display:flex; align-items:flex-end; padding:1rem; overflow:hidden; border-radius:14px; background:linear-gradient(130deg,#4c1d95,#be185d); }
+.pp-poster::before { content:''; position:absolute; inset:0; background:url('/pulse-wave.svg') center / cover; opacity:.65; }
+.pp-poster > * { position:relative; }
+.pp-poster[data-category="SPORTS"] { background:linear-gradient(130deg,#065f46,#0369a1); }
+.pp-poster[data-category="TECHNOLOGY"] { background:linear-gradient(130deg,#1e40af,#0e7490); }
+.pp-poster[data-category="EDUCATION"] { background:linear-gradient(130deg,#4338ca,#0f766e); }
+.pp-poster[data-category="CULTURE"] { background:linear-gradient(130deg,#9a3412,#9d174d); }
+.pp-event { transition:transform .2s,border-color .2s; }
+.pp-event:hover { transform:translateY(-3px); border-color:#a78bfa; }
+.pp-auth { padding-top:clamp(1rem,4vw,3rem); }
+.pp-auth .pp-card { padding:clamp(1rem,4vw,2rem); }
+.pp-ticket { border-top:4px solid #a78bfa; position:relative; }
+.pp-ticket .font-mono { border-block:1px dashed #64748b; padding:12px 0; color:#d8b4fe; }
+.pp-panel form { background:#151d32; border:1px solid #34405a; border-radius:16px; padding:clamp(1rem,3vw,2rem); }
+main input, main select, main textarea { max-width:100%; min-width:0; }
+main a:not([class]) { color:#c4b5fd; }
+@media(max-width:639px) { .pp-hero::before { opacity:.25; } .pp-hero { min-height:280px; } main input,main select,main textarea { font-size:16px; } }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { transition:none!important; animation:none!important; } }
